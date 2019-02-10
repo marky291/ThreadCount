@@ -1,0 +1,18 @@
+{
+    "authors": [
+        {
+            "name": "Mark Hester"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "files": [
+            "app/Helpers.php"
+        ]
+    },
+    "require": {
+        "eftec/bladeone": "^3.19"
+    }
+}

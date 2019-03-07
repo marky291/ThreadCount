@@ -1,4 +1,4 @@
 
- <h1>Blade Syntax Installation</h1>
+ <h1><?php echo static::e(config('project.name')); ?> by <?php echo static::e(config('project.author')); ?> ( <?php echo static::e(config('project.knumber')); ?>)</h1>
 
- <p><?php echo static::e($message); ?></p>
+ <p><?php echo static::e($variable); ?></p>

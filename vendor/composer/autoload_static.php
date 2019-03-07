@@ -7,7 +7,8 @@ namespace Composer\Autoload;
 class ComposerStaticInit76268ec9bc259295493be382f9a6adc0
 {
     public static $files = array (
-        '85f9290491d7963bdacb4ee23146bda7' => __DIR__ . '/../..' . '/app/Helpers.php',
+        'd767e4fc2dc52fe66584ab8c6684783e' => __DIR__ . '/..' . '/adbario/php-dot-notation/src/helpers.php',
+        'e320f53bb3364b7ed572ecc5ef33c5cf' => __DIR__ . '/../..' . '/app/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -19,6 +20,7 @@ class ComposerStaticInit76268ec9bc259295493be382f9a6adc0
         'A' => 
         array (
             'App\\' => 4,
+            'Adbar\\' => 6,
         ),
     );
 
@@ -34,6 +36,10 @@ class ComposerStaticInit76268ec9bc259295493be382f9a6adc0
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',
+        ),
+        'Adbar\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/adbario/php-dot-notation/src',
         ),
     );
 

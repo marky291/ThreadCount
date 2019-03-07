@@ -9,4 +9,5 @@ return array(
     'eftec\\tests\\' => array($vendorDir . '/eftec/bladeone/tests'),
     'eftec\\bladeone\\' => array($vendorDir . '/eftec/bladeone/lib'),
     'App\\' => array($baseDir . '/app'),
+    'Adbar\\' => array($vendorDir . '/adbario/php-dot-notation/src'),
 );

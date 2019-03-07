@@ -1,5 +1,38 @@
 <?php
+/**
+ * @author: Mark Hester
+ * @kNumber: k00233238
+ * @date: 16th February 2019
+ * @project: Design a framework and website.
+ * @tutor: Brendan Watson
+ */
 
-    require __DIR__.'/../vendor/autoload.php';
+    /**
+     * Define where the base path is for loading the bootstrap.
+     */
+    define('base_path', __DIR__ . '/../');
 
-    view('master', ['message' => "Awesome, Everything's working great!"]);
+    /**
+     * Composer autoloader (modern design)
+     * This eliminates the old messy includes.
+     */
+    require base_path . 'vendor/autoload.php';
+
+    /**
+     * The router is responsible for handling the url
+     * and assigning the controller and method names.
+     */
+    $router = new App\RouteProvider($_SERVER['PHP_SELF']);
+
+    /**
+     * Framework is the glue of the application and brains
+     * The app will handle the dispatch of the router to
+     * the designated class it provided.
+     */
+    $app = new App\Framework($router);
+
+    /**
+     * From here on the application is handled by the
+     * controller which will return a view to the user.
+     */
+    $app->dispatchController();

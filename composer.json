@@ -9,10 +9,12 @@
             "App\\": "app/"
         },
         "files": [
-            "app/Helpers.php"
+            "app/helpers.php"
         ]
     },
     "require": {
-        "eftec/bladeone": "^3.19"
+        "ext-mysqli": "*",
+        "eftec/bladeone": "^3.19",
+        "adbario/php-dot-notation": "^2.2"
     }
 }

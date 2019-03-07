@@ -1,4 +1,4 @@
 
-    <h1>Blade Syntax Installation</h1>
+    <h1>{{ config('project.name') }} by {{ config('project.author') }} ( {{ config('project.knumber') }})</h1>
 
-    <p>{{ $message }}</p>
+    <p>{{ $variable }}</p>

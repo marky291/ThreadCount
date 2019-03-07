@@ -8,7 +8,7 @@ class ComposerStaticInit76268ec9bc259295493be382f9a6adc0
 {
     public static $files = array (
         'd767e4fc2dc52fe66584ab8c6684783e' => __DIR__ . '/..' . '/adbario/php-dot-notation/src/helpers.php',
-        'e320f53bb3364b7ed572ecc5ef33c5cf' => __DIR__ . '/../..' . '/app/helpers.php',
+        'debb7580b469140901e5152836b72376' => __DIR__ . '/../..' . '/app/Helpers/shorthand.php',
     );
 
     public static $prefixLengthsPsr4 = array (

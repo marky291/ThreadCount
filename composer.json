@@ -9,7 +9,7 @@
             "App\\": "app/"
         },
         "files": [
-            "app/helpers.php"
+            "app/Helpers/shorthand.php"
         ]
     },
     "require": {

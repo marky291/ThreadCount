@@ -1,7 +1,11 @@
 body {
-  background: red;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
-body .test {
-  background: black;
+.sidebar .block {
+  margin-bottom: 1em;
+}
+
+.sidebar .block:last-child {
+  margin-bottom: initial;
 }

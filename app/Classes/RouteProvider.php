@@ -6,7 +6,7 @@
  * Time: 23:32
  */
 
-namespace App;
+namespace App\Classes;
 
 use App\Interfaces\RoutingInterface;
 
@@ -27,7 +27,7 @@ class RouteProvider implements RoutingInterface
      *
      * @var string
      */
-    private $defaultController = 'HomeController';
+    private $defaultController = 'ThreadsController';
 
     /**
      * The default method that will be used if no method specified.
@@ -65,7 +65,7 @@ class RouteProvider implements RoutingInterface
      *
      * @return mixed
      */
-    public function method()
+    public function action()
     {
         if (isset($this->fragments[1])) {
             return ucfirst($this->fragments[1]);

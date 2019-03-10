@@ -6,7 +6,7 @@
  * Time: 12:18
  */
 
-namespace App;
+namespace App\Classes;
 
 use eftec\bladeone\BladeOne;
 

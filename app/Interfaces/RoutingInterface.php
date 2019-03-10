@@ -27,5 +27,5 @@ interface RoutingInterface
      *
      * @return mixed
      */
-    public function method();
+    public function action();
 }

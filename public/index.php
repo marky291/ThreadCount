@@ -8,6 +8,12 @@
  */
 
     /**
+     * Let the application know we will be using
+     * sessions. (mainly for user auth)
+     */
+    session_start();
+
+    /**
      * Define where the base path is for loading the bootstrap.
      */
     define('base_path', __DIR__ . '/../');
@@ -22,7 +28,13 @@
      * The router is responsible for handling the url
      * and assigning the controller and method names.
      */
-    $router = new App\RouteProvider($_SERVER['PHP_SELF']);
+    $router = new App\Classes\RouteProvider($_SERVER['PHP_SELF']);
+
+    /**
+     * The current request information such as get requests,
+     * post requests etc..
+     */
+    $request = new App\Classes\Request($_GET, $_POST, $_SESSION);
 
     /**
      * Framework is the glue of the application and brains
@@ -35,4 +47,9 @@
      * From here on the application is handled by the
      * controller which will return a view to the user.
      */
-    $app->dispatchController();
+    $app->dispatchController($request);
+
+    /**
+     * Cause lazy to debug.
+     */
+    var_dump($app, $request);

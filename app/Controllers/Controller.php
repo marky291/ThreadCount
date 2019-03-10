@@ -8,8 +8,9 @@
 
 namespace App\Controllers;
 
+use App\Classes\Request;
 use Exception;
-use App\BladeCompiler;
+use App\Classes\BladeCompiler;
 
 /**
  * Class Controller
@@ -18,6 +19,24 @@ use App\BladeCompiler;
  */
 abstract class Controller
 {
+
+    /**
+     * Information about current request.
+     *
+     * @var Request
+     */
+    protected $request;
+
+    /**
+     * Controller constructor.
+     *
+     * @param Request $request
+     */
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
+
     /**
      * Render a view with variables.
      *

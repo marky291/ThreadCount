@@ -6,7 +6,7 @@
  * Time: 16:46
  */
 
-namespace App;
+namespace App\Classes;
 
 use Adbar\Dot;
 
@@ -56,7 +56,7 @@ class Config
      */
     public static function instance(): Config
     {
-        return self::$instance ?? self::$instance = new self(__DIR__ . '/../config/');
+        return self::$instance ?? self::$instance = new self(__DIR__ . '/../../config/');
     }
 
     /**

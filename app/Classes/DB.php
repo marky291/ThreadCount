@@ -33,6 +33,10 @@ class DB extends \mysqli
             config('database.connection.port'),
             config('database.connection.socket')
         );
+
+        if ($this->connect_error) {
+            die('Connection failed: ' . $this->connect_error);
+        }
     }
 
     /**
@@ -52,7 +56,70 @@ class DB extends \mysqli
     {
         $data = [];
 
-        $result = parent::query($query, $resultmode);
+        $result  = parent::query($query, $resultmode);
+//
+//        $classes = [];
+//
+//        $result  = parent::query($query, $resultmode);
+//
+//        while($row = $result->fetch_row())
+//        {
+//            for ($i = 0; $i < $result->field_count; $i++)
+//            {
+//                $field = $result->fetch_field();
+//
+//                $class = "App\\Models\\" . ucfirst($field->orgtable);
+//                $method = 'set' . ucfirst($field->name);
+//
+//                if (array_key_exists($class, $classes))
+//                {
+//                    $object = $classes[$class];
+//                }
+//                else
+//                {
+//                    $object = array_push($classes, [$class => new $class()]);
+//                }
+//
+//                var_dump($classes);
+//
+//                if (method_exists($object, $method))
+//                {
+//                    $object->$method($row[$i]);
+//                }
+//                else
+//                {
+//                    echo $method . " does not exist";
+//                }
+//
+//                var_dump($object);
+//            }
+//        }
+//
+//        exit();
+//
+//
+//        for ($i = 0; $i < $result->field_count; $i++)
+//        {
+//            $fields = $result->fetch_field();
+//            $attribute = $result->fetch_row();
+//
+//            var_dump($fields->name, $attribute[$i]);
+//
+//            $class = "App\\Models\\" . ucfirst($fields->orgtable);
+//
+//            $object = new $class;
+//
+//            $method = 'set' . ucfirst($fields->name);
+//
+//            if (method_exists($object, $method))
+//            {
+//                $object->$method($attribute[$i]);
+//            }
+//
+//            var_dump($object);
+//        }
+//
+//        exit();
 
         while($row = $result->fetch_assoc())
         {

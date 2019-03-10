@@ -12,3 +12,13 @@ function config(string $key = null)
 
     return App\Classes\Config::instance()->items;
 }
+
+/**
+ * Return user authentication singleton instance.
+ *
+ * @return \App\Classes\Auth
+ */
+function auth()
+{
+    return \App\Classes\Auth::instance();
+}

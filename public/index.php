@@ -8,12 +8,6 @@
  */
 
     /**
-     * Let the application know we will be using
-     * sessions. (mainly for user auth)
-     */
-    session_start();
-
-    /**
      * Define where the base path is for loading the bootstrap.
      */
     define('base_path', __DIR__ . '/../');
@@ -23,6 +17,23 @@
      * This eliminates the old messy includes.
      */
     require base_path . 'vendor/autoload.php';
+
+    /**
+     * We need to autoload all classes and objects
+     * before the sessions starts to allow
+     * serialization of objects in the session.
+     */
+    session_start();
+
+    /**
+     * Singleton design for user sessions, since our lifecycle
+     * only expects the one instance of a user to ever exist.
+     *
+     * This singleton design allows usage across multiple files.
+     *
+     * @note: You can use auth() helper for shorthand version.
+     */
+    App\Classes\Auth::instance()->setUserSession($_SESSION['user']);
 
     /**
      * The router is responsible for handling the url
@@ -49,7 +60,3 @@
      */
     $app->dispatchController($request);
 
-    /**
-     * Cause lazy to debug.
-     */
-    var_dump($app, $request);

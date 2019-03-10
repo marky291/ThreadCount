@@ -4,7 +4,11 @@
             {{ config('project.name') }}
         </a>
         <div class="w-full md:w-auto mb-6 md:mb-0 text-center md:text-right">
-            <a href="#" class="inline-block no-underline bg-black text-white text-sm py-2 px-3">Login / Regsiter</a>
+            @if (!auth()->check())
+                <a href="/auth/login" class="inline-block no-underline bg-black text-white text-sm py-2 px-3">Login</a>
+            @else
+                <a href="/auth/logout" class="inline-block no-underline bg-black text-white text-sm py-2 px-3">Logout {{ auth()->user()->getUsername() }}</a>
+            @endif
         </div>
     </div>
 </header>

@@ -19,6 +19,11 @@ use App\Models\Topics;
  */
 class ThreadsController extends Controller
 {
+    /**
+     * This is the main page of the website.
+     *
+     * View a list of all topics.
+     */
     public function index()
     {
         $currentTopic = $this->request->get('topic');

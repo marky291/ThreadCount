@@ -23,6 +23,7 @@ class Threads
         return DB::instance()->query("
             select 
                 threads.title,
+                threads.slug,
                 threads.content,
                 topics.title as 'topic.title',
                 threads.views as 'count.views',

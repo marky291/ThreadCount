@@ -85,7 +85,10 @@ class RouteProvider implements RoutingInterface
         return explode('/', ltrim($route, '/'));
     }
 
-    private function hasValidControllerName()
+    /**
+     * @return bool
+     */
+    private function hasValidControllerName(): bool
     {
         return isset($this->fragments[0]) && $this->fragments[0] !== '';
     }

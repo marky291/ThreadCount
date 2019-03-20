@@ -8,6 +8,7 @@
 
 namespace App\Controllers;
 
+use App\Classes\Auth;
 use App\Classes\Request;
 use Exception;
 use App\Classes\BladeCompiler;
@@ -52,5 +53,31 @@ abstract class Controller
         {
             die($e->getMessage());
         }
+    }
+
+
+    public function requestGuard(string $request_method)
+    {
+        if (filter_var($_SERVER['REQUEST_METHOD']) === $request_method)
+        {
+            return true;
+        }
+
+        exit(400);
+    }
+
+    /**
+     * Route requires authentication to continue.
+     *
+     * @return bool|null
+     */
+    public function requiresAuthentication() : bool
+    {
+        if (auth()->check())
+        {
+            return true;
+        }
+
+        exit(401);
     }
 }

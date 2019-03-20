@@ -21,6 +21,13 @@ class DB extends \mysqli
     private static $instance;
 
     /**
+     * Store a query collection result.
+     *
+     * @var array
+     */
+    private $collection = [];
+
+    /**
      * DB constructor.
      */
     public function __construct()
@@ -50,83 +57,45 @@ class DB extends \mysqli
     /**
      * @param string $query
      * @param int $resultmode
-     * @return array
+     * @return DB
      */
     public function query($query, $resultmode = MYSQLI_STORE_RESULT)
     {
-        $data = [];
+        $this->collection = [];
 
-        $result  = parent::query($query, $resultmode);
-//
-//        $classes = [];
-//
-//        $result  = parent::query($query, $resultmode);
-//
-//        while($row = $result->fetch_row())
-//        {
-//            for ($i = 0; $i < $result->field_count; $i++)
-//            {
-//                $field = $result->fetch_field();
-//
-//                $class = "App\\Models\\" . ucfirst($field->orgtable);
-//                $method = 'set' . ucfirst($field->name);
-//
-//                if (array_key_exists($class, $classes))
-//                {
-//                    $object = $classes[$class];
-//                }
-//                else
-//                {
-//                    $object = array_push($classes, [$class => new $class()]);
-//                }
-//
-//                var_dump($classes);
-//
-//                if (method_exists($object, $method))
-//                {
-//                    $object->$method($row[$i]);
-//                }
-//                else
-//                {
-//                    echo $method . " does not exist";
-//                }
-//
-//                var_dump($object);
-//            }
-//        }
-//
-//        exit();
-//
-//
-//        for ($i = 0; $i < $result->field_count; $i++)
-//        {
-//            $fields = $result->fetch_field();
-//            $attribute = $result->fetch_row();
-//
-//            var_dump($fields->name, $attribute[$i]);
-//
-//            $class = "App\\Models\\" . ucfirst($fields->orgtable);
-//
-//            $object = new $class;
-//
-//            $method = 'set' . ucfirst($fields->name);
-//
-//            if (method_exists($object, $method))
-//            {
-//                $object->$method($attribute[$i]);
-//            }
-//
-//            var_dump($object);
-//        }
-//
-//        exit();
+        $result = parent::query($query, $resultmode);
 
-        while($row = $result->fetch_assoc())
-        {
-            $data[] = $row;
+        if ($this->error) {
+            var_dump($this->error);
         }
 
-        return $data;
+        while ($row = $result->fetch_assoc()) {
+            $this->collection[] = $row;
+        }
+
+        $result->free();
+
+        return $this;
+    }
+
+    /**
+     * Return first result of return Empty Result.
+     *
+     * @return array|mixed
+     */
+    public function first()
+    {
+        return $this->collection[0] ?? $this->collection;
+    }
+
+    /**
+     * Return all the results of the query.
+     *
+     * @return array
+     */
+    public function get(): array
+    {
+        return $this->collection;
     }
 
     /**
@@ -136,6 +105,6 @@ class DB extends \mysqli
      */
     public static function instance()
     {
-        return  self::$instance ?? self::$instance = new self;
+        return self::$instance ?? self::$instance = new self;
     }
 }

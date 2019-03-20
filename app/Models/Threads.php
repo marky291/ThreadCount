@@ -11,30 +11,104 @@ namespace App\Models;
 
 use App\Classes\DB;
 
-class Threads
+class Threads extends Model
 {
-    public static function all()
-    {
-        return DB::instance()->query('select * from threads');
-    }
-
-    public static function whereTopic($topic)
+    public static function all(): array
     {
         return DB::instance()->query("
             select 
+                threads.thread_id,
                 threads.title,
                 threads.slug,
                 threads.content,
                 topics.title as 'topic.title',
                 threads.views as 'count.views',
-                (select count(reply_id) from comments where comments.thread_id = threads.thread_id) as 'count.comments',
+                (select count(comment_id) from comments where comments.thread_id = threads.thread_id) as 'count.comments',
+                threads.created_at,
+                users.username,
+                users.avatar_url
+            from 
+                threads
+            inner join topics on threads.`topic_id` = topics.topic_id
+            inner join users on threads.`creator_id` = users.user_id
+            order by threads.created_at desc;
+        ")->get();
+    }
+
+    /**
+     * @param string $slug
+     * @return DB|bool|\mysqli_result
+     */
+    public static function whereSlug(string $slug)
+    {
+        return DB::instance()->query("
+            select 
+                threads.thread_id,
+                threads.title,
+                threads.slug,
+                threads.content,
+                topics.title as 'topic.title',
+                threads.views as 'count.views',
+                (select count(comment_id) from comments where comments.thread_id = threads.thread_id) as 'count.comments',
+                threads.created_at,
+                users.username,
+                users.avatar_url
+            from 
+                threads
+            inner join topics on threads.`topic_id` = topics.topic_id
+            inner join users on threads.`creator_id` = users.user_id
+            where threads.slug = '{$slug}';
+        ");
+    }
+
+    /**
+     * @param $topic
+     * @return DB|bool|\mysqli_result
+     */
+    public static function whereTopic($topic)
+    {
+        return DB::instance()->query("
+            select 
+                threads.thread_id,
+                threads.title,
+                threads.slug,
+                threads.content,
+                topics.title as 'topic.title',
+                threads.views as 'count.views',
+                (select count(comment_id) from comments where comments.thread_id = threads.thread_id) as 'count.comments',
                 threads.created_at,
                 users.username,
                 users.avatar_url
             from 
                 threads 
-            inner join topics on topics.title = '{$topic}' 
-            inner join users on threads.`creator_id` = users.user_id;
+            inner join topics on threads.topic_id = topics.topic_id
+            inner join users on threads.`creator_id` = users.user_id
+            where topics.title = '{$topic}'
+            order by threads.created_at desc;
+        ");
+    }
+
+    /**
+     * Get all the  threads from a current users username.
+     *
+     * @param $currentUser
+     * @return DB|bool|\mysqli_result
+     */
+    public static function whereUsername(string $currentUser)
+    {
+        return DB::instance()->query("
+            select
+              users.username,
+              topics.title as 'topic.title',
+              threads.views as 'count.views',
+              users.avatar_url,
+              (select count(comment_id) from comments where comments.thread_id = threads.thread_id) as 'count.comments',
+              threads.*
+            from
+              threads
+            inner join  users on threads.creator_id = users.user_id
+            inner join topics on threads.topic_id = topics.topic_id
+            where users.username = '{$currentUser}';
         ");
     }
 }

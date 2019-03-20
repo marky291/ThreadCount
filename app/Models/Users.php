@@ -16,7 +16,7 @@ use App\Interfaces\AuthUserInterface;
  *
  * @package App\Models
  */
-class Users implements AuthUserInterface
+class Users extends Model implements AuthUserInterface
 {
     private $email;
     private $username;
@@ -36,7 +36,7 @@ class Users implements AuthUserInterface
      */
     public function setPassword($password)
     {
-        $this->password = hash('ripemd160', $password);
+        $this->password = encrypt($password);
     }
 
     /**
@@ -94,5 +94,17 @@ class Users implements AuthUserInterface
         $this->ip_address = $ip_address;
 
         return $this;
+    }
+
+    /**
+     * Get the users who has matching username and passwords.
+     *
+     * @param string $username
+     * @param string $password
+     * @return DB|bool|\mysqli_result
+     */
+    public static function whereUsernameAndPassword(string $username, string $password)
+    {
+        return DB::instance()->query("select * from users where username = '{$username}' and password = '{$password}'");
     }
 }

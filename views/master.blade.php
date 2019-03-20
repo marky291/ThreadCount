@@ -8,8 +8,8 @@
 
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
-    <link href="css/app.css" rel="stylesheet" >
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet" >
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" rel="stylesheet">
 
     <title>{{ config('project.name') }}</title>
 
@@ -18,7 +18,7 @@
 
     @include('navbar')
 
-    @yield('content')
+    @yield('grid')
 
     @include('footer')
 

@@ -16,7 +16,7 @@ namespace App\Interfaces;
 interface AuthUserInterface
 {
     /**
-     * Get the user ID.
+     * Get the users username.
      *
      * @return mixed
      */

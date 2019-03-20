@@ -15,7 +15,7 @@ use App\Classes\DB;
  *
  * @package App\Models
  */
-class Roles
+class Roles extends Model
 {
     public static function all()
     {

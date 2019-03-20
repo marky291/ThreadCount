@@ -26,7 +26,7 @@ class Auth
     /**
      * stored as ... on session array.
      */
-    const session_key = 'user';
+    public const session_key = 'user';
 
     /**
      * @return Auth

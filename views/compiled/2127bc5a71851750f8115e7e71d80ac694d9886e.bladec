@@ -1,35 +1,13 @@
 <?php $_shouldextend[1]=1; ?>
 
 <?php $this->startSection('content'); ?>
- <div class="w-full px-6 py-12 border-t">
- <div class="container mx-auto max-w-xl">
- <div class="flex mb-4">
- <div class="w-1/5">
- <div class="sidebar container py-4 px-3">
- <div class="block">
- <h2>Topics</h2>
- <ul class="list-reset">
- <?php $__currentLoopData = $topics; $this->addLoop($__currentLoopData); foreach($__currentLoopData as $topic): $this->incrementLoopIndices(); $loop = $this->getFirstLoop(); ?>
- <li><a href="/threads?topic=<?php echo static::e(strtolower($topic['title'])); ?>" title="<?php echo static::e($topic['description']); ?>"><?php echo static::e($topic['title']); ?></a></li>
- <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
- </ul>
- </div>
- <div class="block">
- <h2>Threads</h2>
- <ul class="list-reset">
- <li><a href="">My Threads</a></li>
- <li><a href="">Popular Threads</a></li>
- </ul>
- </div>
- </div>
- </div>
- <div class="w-4/5">
- <div class="container py-4 px-3">
+ <?php if(count($threads) > 0): ?>
  <?php $__currentLoopData = $threads; $this->addLoop($__currentLoopData); foreach($__currentLoopData as $thread): $this->incrementLoopIndices(); $loop = $this->getFirstLoop(); ?>
- <div class="thread-item px-6 py-4 hover:bg-grey-lighter rounded flex justify-between cursor-pointer">
+ <div class="thread-item px-6 py-5 hover:bg-grey-lighter rounded flex justify-between items-center">
+ <div class="rounded-full h-16 w-16 flex avatar-circle items-center justify-center mr-6 bg-grey"><img class="rounded-full avatar-circle" src="<?php echo static::e($thread['avatar_url']); ?>" alt=""></div>
  <div class="flex-1">
- <h4 class="font-semibold text-base"><?php echo static::e($thread['title']); ?></h4>
- <p class="text-base truncate text-grey-darkest"><span class="text-blue"><?php echo static::e($thread['username']); ?></span> posted at <?php echo static::e($thread['created_at']); ?></p>
+ <h4 class="font-bold md:font-semibold mb-3 tracking-tight text-black hover:text-black"><a href="/threads/show?slug=<?php echo static::e($thread['slug']); ?>" class="text-grey-darkest"><?php echo static::e($thread['title']); ?></a></h4>
+ <p class="text-grey-dark text-xs"><span class="text-blue"><a title="View all threads created by <?php echo static::e($thread['username']); ?>" href="/threads/user?username=<?php echo static::e($thread['username']); ?>"><?php echo static::e($thread['username']); ?></a></span> posted at <?php echo static::e($thread['created_at']); ?></p>
  </div>
  <div class="flex flex-row justify-around items-center">
  <div class="mr-4">
@@ -40,17 +18,19 @@
  <i class="fas fa-comment text-grey"></i> <?php echo static::e($thread['count.comments']); ?>
 
  </div>
- <div class="px-4 py-1 text-blue border border-blue rounded-full text-xs">
- <?php echo static::e(strtoupper($thread['topic.title'])); ?>
-
+ <div class="thread-<?php echo static::e(strtolower($thread['topic.title'])); ?> w-28 text-center px-4 py-1 text-blue border border-blue rounded-full text-xs">
+ <a class="topic-title" href="/threads/topic?title=<?php echo static::e(strtolower($thread['topic.title'])); ?>"><?php echo static::e(strtoupper($thread['topic.title'])); ?></a>
  </div>
  </div>
  </div>
  <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
+ <?php else: ?>
+ <div class="flex flex-col items-center">
+ <img src="https://ya-webdesign.com/images/vision-vector-colorful-2.png"
+ alt="A person searching" style="height:200px; width: 200px;">
+
+ <h4 class="text-grey-darkest">Uh oh! There are no threads to be shown!</h4>
  </div>
- </div>
- </div>
- </div>
- </div>
+ <?php endif; ?>
 <?php $this->stopSection(); ?>
-<?php if (@$_shouldextend[1]) { echo $this->runChild('master'); } ?>
+<?php if (@$_shouldextend[1]) { echo $this->runChild('grid.two-column'); } ?>

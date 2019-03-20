@@ -1,5 +1,21 @@
+html {
+    background-color: #fff;
+    font-size: 16px;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    min-width: 300px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    text-rendering: optimizeLegibility;
+}
+
 body {
-  font-family: 'Source Sans Pro', sans-serif;
+    transition: all .3s;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.sidebar {
+    border-right: 1px solid #d9e1e8;
 }
 
 .sidebar .block {
@@ -8,4 +24,73 @@ body {
 
 .sidebar .block:last-child {
   margin-bottom: initial;
+}
+
+a {
+  text-decoration: none;
+}
+
+.avatar-circle {
+    height: 50px;
+    width: 50px;
+}
+
+.thread-general {
+    color: #f56857;
+    border: 1px solid #f56857;
+}
+.thread-general:hover {
+    color: white;
+    border: 1px solid #f56857;
+    background-color: #f56857
+}
+
+.thread-mechanical {
+    color: #66add3;
+    border: 1px solid #66add3;
+}
+.thread-mechanical:hover {
+    color: white;
+    border: 1px solid #66add3;
+    background-color: #66add3;
+}
+
+.thread-electrical {
+    color: #09d7c1;
+    border: 1px solid #09d7c1;
+}
+.thread-electrical:hover {
+    color: white;
+    border: 1px solid #09d7c1;
+    background-color: #09d7c1;
+}
+
+.thread-programming {
+    color: #3ab981;
+    border: 1px solid #3ab981;
+}
+.thread-programming:hover {
+    color: white;
+    border: 1px solid #3ab981;
+    background-color: #3ab981;
+}
+
+.w-28 {
+    width: 7rem;
+}
+
+.topic-title {
+    color: inherit;
+}
+
+.sidebar .selected, nav .selected {
+    color: #328af1;
+    font-weight: 700;
+}
+
+.sidebar ul li>a {
+    display: flex;
+}
+.sidebar ul li>a:hover {
+    background-color: #f6f6f6;
 }

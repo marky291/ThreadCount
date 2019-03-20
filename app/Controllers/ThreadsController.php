@@ -8,6 +8,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Comments;
 use App\Models\Roles;
 use App\Models\Threads;
 use App\Models\Topics;
@@ -26,17 +27,48 @@ class ThreadsController extends Controller
      */
     public function index()
     {
-        $currentTopic = $this->request->get('topic');
-
         $this->render('threads.index', [
-            'topics' => Topics::all(),
-            'currentTopic' => $currentTopic,
-            'threads' => Threads::whereTopic($currentTopic),
+            'threads' => Threads::all(),
         ]);
     }
 
-    public function view()
+    /**
+     * View a certain group of topics.
+     */
+    public function topic()
     {
-        $this->render('threads.index', ['variable' => 'HomeController@show']);
+        $topicTitle = $this->request->get('title');
+
+        $this->render('threads.index', [
+            'currentTopic' => $topicTitle,
+            'threads' => Threads::whereTopic($topicTitle)->get(),
+        ]);
+    }
+
+    /**
+     * Show a specific thread on the page by its slug
+     */
+    public function show(): void
+    {
+        $currentSlug = $this->request->get('slug');
+
+        $thread = Threads::whereSlug($currentSlug)->first();
+
+        $this->render('threads.show', [
+            'thread' => $thread,
+            'comments' => Comments::whereThreadID($thread['thread_id'])->get()
+        ]);
+    }
+
+    /**
+     * Get all the threads created by a specific username.
+     */
+    public function user() : void
+    {
+        $currentUser = $this->request->get('username');
+
+        $this->render('threads.index', [
+            'threads' => Threads::whereUsername($currentUser)->get()
+        ]);
     }
 }

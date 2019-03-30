@@ -33,19 +33,25 @@
      *
      * @note: You can use auth() helper for shorthand version.
      */
-    App\Classes\Auth::instance()->setUserSession($_SESSION['user']);
+    App\Classes\Auth::instance()->setUserSession($_SESSION['user'] ?? []);
 
     /**
      * The router is responsible for handling the url
      * and assigning the controller and method names.
      */
-    $router = new App\Classes\RouteProvider($_SERVER['PHP_SELF']);
+    $router = new App\Classes\Routing($_SERVER['PHP_SELF']);
 
     /**
      * The current request information such as get requests,
      * post requests etc..
      */
     $request = new App\Classes\Request($_GET, $_POST, $_SESSION);
+
+    /**
+     * Blade templating engine, uses dependency injection.
+     * Handles the view of front end found in /views folder.
+     */
+    $template = new App\Classes\Template(base_path . 'views');
 
     /**
      * Framework is the glue of the application and brains
@@ -58,5 +64,4 @@
      * From here on the application is handled by the
      * controller which will return a view to the user.
      */
-    $app->dispatchController($request);
-
+    $app->dispatchController($request, $template);

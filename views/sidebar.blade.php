@@ -3,12 +3,11 @@
         <h2 class="mb-3 lg:mb-2 text-grey uppercase tracking-wide font-bold text-sm lg:text-xs">Topics</h2>
         <ul class="list-reset">
             <li class="mb-3 lg:mb-2">
-                <a class="hover:underline text-grey-darkest" href="/threads" title="All threads sorted by creation date">All Threads</a>
+                <a class="hover:underline text-grey-darkest {{ css_status(isCurrentUri('/threads')) }}" href="/threads" title="All threads sorted by creation date">All Threads</a>
             </li>
             @foreach(App\Models\Topics::all() as $topic)
                 <li class="mb-3 lg:mb-2">
-                    {{--<a class="hover:underline text-grey-darkest {{ $currentTopic === strtolower($topic['title']) ?  'selected' : 'not-selected'  }}" href="/threads/topic?title={{strtolower($topic['title'])}}" title="{{$topic['description']}}">{{$topic['title']}}</a>--}}
-                    <a class="hover:underline text-grey-darkest" href="/threads/topic?title={{strtolower($topic['title'])}}" title="{{$topic['description']}}">{{$topic['title']}}</a>
+                    <a class="hover:underline text-grey-darkest {{ css_status(hasQueryString('title', strtolower($topic['title'])))  }}" href="/threads/topic?title={{strtolower($topic['title'])}}" title="{{$topic['description']}}">{{$topic['title']}}</a>
                 </li>
             @endforeach
         </ul>

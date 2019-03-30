@@ -9,8 +9,11 @@
 namespace App;
 
 use App\Classes\Request;
-use App\Classes\RouteProvider;
+use App\Classes\Routing;
+use App\Controllers\ErrorController;
+use App\Exceptions\FrameworkException;
 use App\Interfaces\RoutingInterface;
+use eftec\bladeone\BladeOne;
 
 /**
  * Class Framework
@@ -27,9 +30,9 @@ class Framework
     /**
      * Framework constructor.
      *
-     * @param RouteProvider $router
+     * @param Routing $router
      */
-    public function __construct(RouteProvider $router)
+    public function __construct(Routing $router)
     {
         $this->router = $router;
     }
@@ -39,14 +42,19 @@ class Framework
      * handles the rest of the response.
      *
      * @param Request $request
+     * @param BladeOne $template
      * @return mixed
      */
-    public function dispatchController(Request $request)
+    public function dispatchController(Request $request, BladeOne $template)
     {
-        $controller = __NAMESPACE__.'\\Controllers\\'.$this->router->controller();
+        $controller = $this->router->controller();
 
-        //@todo: catch failures as 404 page.
+        var_dump($controller, class_exists($controller), method_exists($controller, $this->router->action()));
 
-        return (new $controller($request))->{$this->router->action()}();
+        if (class_exists($controller) && method_exists($controller, $this->router->action())) {
+            return (new $controller($request, $template))->{$this->router->action()}();
+        }
+
+        return (new ErrorController($request, $template))->PageNotFound();
     }
 }

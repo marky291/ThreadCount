@@ -10,7 +10,9 @@
         },
         "files": [
             "app/Helpers/shorthand.php",
-            "app/Helpers/UrlHelpers.php"
+            "app/Helpers/request.php",
+            "app/Helpers/encryption.php",
+            "app/Helpers/stylesheet.php"
         ]
     },
     "require": {

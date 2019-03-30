@@ -15,7 +15,7 @@ use App\Interfaces\RoutingInterface;
  *
  * @package App
  */
-class RouteProvider implements RoutingInterface
+class Routing implements RoutingInterface
 {
     /**
      * @var string
@@ -27,7 +27,7 @@ class RouteProvider implements RoutingInterface
      *
      * @var string
      */
-    private $defaultController = 'ThreadsController';
+    private $defaultController = 'Threads';
 
     /**
      * The default method that will be used if no method specified.
@@ -54,10 +54,21 @@ class RouteProvider implements RoutingInterface
     public function controller()
     {
         if ($this->hasValidControllerName()) {
-            return ucfirst($this->fragments[0]) . 'Controller';
+            return $this->controllerNamespace($this->controllerName());
         }
 
-        return $this->defaultController;
+        return $this->controllerNamespace($this->defaultController);
+    }
+
+    /**
+     * Return a class namespace as autoloader would oad.
+     *
+     * @param string $toClass
+     * @return string
+     */
+    private function controllerNamespace(string $toClass): string
+    {
+        return "App\\Controllers\\{$toClass}Controller";
     }
 
     /**
@@ -91,5 +102,15 @@ class RouteProvider implements RoutingInterface
     private function hasValidControllerName(): bool
     {
         return isset($this->fragments[0]) && $this->fragments[0] !== '';
+    }
+
+    /**
+     * Get the controller name.
+     *
+     * @return string
+     */
+    public function controllerName(): string
+    {
+        return ucfirst($this->fragments[0]);
     }
 }

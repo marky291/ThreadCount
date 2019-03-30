@@ -8,7 +8,7 @@
 
 namespace App\Models;
 
-use App\Classes\DB;
+use App\Classes\Database;
 use App\Interfaces\AuthUserInterface;
 
 /**
@@ -101,10 +101,10 @@ class Users extends Model implements AuthUserInterface
      *
      * @param string $username
      * @param string $password
-     * @return DB|bool|\mysqli_result
+     * @return Database|bool|\mysqli_result
      */
     public static function whereUsernameAndPassword(string $username, string $password)
     {
-        return DB::instance()->query("select * from users where username = '{$username}' and password = '{$password}'");
+        return Database::instance()->query("select * from users where username = '{$username}' and password = '{$password}'");
     }
 }

@@ -9,7 +9,7 @@
 namespace App\Models;
 
 
-use App\Classes\DB;
+use App\Classes\Database;
 
 class Topics extends Model
 {
@@ -18,6 +18,6 @@ class Topics extends Model
      */
     public static function all(): array
     {
-        return DB::instance()->query('select * from topics')->get();
+        return Database::instance()->query('select * from topics')->get();
     }
 }

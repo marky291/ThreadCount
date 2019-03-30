@@ -8,5 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'd767e4fc2dc52fe66584ab8c6684783e' => $vendorDir . '/adbario/php-dot-notation/src/helpers.php',
     'debb7580b469140901e5152836b72376' => $baseDir . '/app/Helpers/shorthand.php',
-    'e1c5236b2a9c9c158c36503a623ede02' => $baseDir . '/app/Helpers/UrlHelpers.php',
+    '682407acfbebb18080a67688adee70ab' => $baseDir . '/app/Helpers/request.php',
+    '062fd04b0ad4460a3511b0f7a39716db' => $baseDir . '/app/Helpers/encryption.php',
+    '8b95af0fbdbc84a26acb54f39df14e65' => $baseDir . '/app/Helpers/stylesheet.php',
 );

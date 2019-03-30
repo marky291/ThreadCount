@@ -8,8 +8,6 @@
 
 namespace App\Models;
 
-use App\Classes\DB;
-
 /**
  * Class Model
  *
@@ -17,10 +15,5 @@ use App\Classes\DB;
  */
 abstract class Model
 {
-    protected static $sql;
-
-    public function __construct()
-    {
-        self::$sql = DB::instance();
-    }
+    //
 }

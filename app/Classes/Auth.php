@@ -42,7 +42,7 @@ class Auth
      * @param mixed ...$user
      * @return void
      */
-    public function setUserSession($user)
+    public function setUserSession($user): void
     {
         if ($user instanceof Users)
         {

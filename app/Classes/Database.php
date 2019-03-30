@@ -13,7 +13,7 @@ namespace App\Classes;
  *
  * @package App
  */
-class DB extends \mysqli
+class Database extends \mysqli
 {
     /**
      * @var self;
@@ -57,7 +57,7 @@ class DB extends \mysqli
     /**
      * @param string $query
      * @param int $resultmode
-     * @return DB
+     * @return Database
      */
     public function query($query, $resultmode = MYSQLI_STORE_RESULT)
     {
@@ -101,7 +101,7 @@ class DB extends \mysqli
     /**
      * Singleton instance.
      *
-     * @return DB|\mysqli
+     * @return Database|\mysqli
      */
     public static function instance()
     {

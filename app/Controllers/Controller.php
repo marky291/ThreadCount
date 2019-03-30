@@ -8,10 +8,14 @@
 
 namespace App\Controllers;
 
-use App\Classes\Auth;
 use App\Classes\Request;
-use Exception;
-use App\Classes\BladeCompiler;
+use App\Gates\GateInterface;
+use App\Gates\GuestAccessGate;
+use App\Gates\UserAccessGate;
+use App\Gates\RequestPostGate;
+use eftec\bladeone\BladeOne;
+use App\Exceptions\Exception;
+use App\Exceptions\GateNotFoundException;
 
 /**
  * Class Controller
@@ -20,6 +24,14 @@ use App\Classes\BladeCompiler;
  */
 abstract class Controller
 {
+    /**
+     * @var array
+     */
+    protected $gates = [
+        'auth' => UserAccessGate::class,
+        'guest' => GuestAccessGate::class,
+        'post' => RequestPostGate::class,
+    ];
 
     /**
      * Information about current request.
@@ -29,13 +41,21 @@ abstract class Controller
     protected $request;
 
     /**
+     * @var BladeOne
+     */
+    protected $template;
+
+    /**
      * Controller constructor.
      *
      * @param Request $request
+     * @param BladeOne $blade
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, BladeOne $blade)
     {
         $this->request = $request;
+
+        $this->template = $blade;
     }
 
     /**
@@ -43,11 +63,12 @@ abstract class Controller
      *
      * @param string $blade
      * @param array $variables
+     * @throws \Exception
      */
-    public function render(string $blade, array $variables)
+    public function render(string $blade, array $variables): void
     {
         try {
-            echo BladeCompiler::instance()->run($blade, $variables);
+            echo $this->template->run($blade, $variables);
         }
         catch (Exception $e)
         {
@@ -55,29 +76,27 @@ abstract class Controller
         }
     }
 
-
-    public function requestGuard(string $request_method)
-    {
-        if (filter_var($_SERVER['REQUEST_METHOD']) === $request_method)
-        {
-            return true;
-        }
-
-        exit(400);
-    }
-
     /**
-     * Route requires authentication to continue.
+     * Security gates requiring authorization and checks.
      *
-     * @return bool|null
+     * @param array $guards
      */
-    public function requiresAuthentication() : bool
+    public function gates($guards = []): void
     {
-        if (auth()->check())
+        foreach ($guards as $guard)
         {
-            return true;
-        }
+            if (isset($this->gates[$guard]))
+            {
+                /** @var GateInterface $class */
+                $class = new $this->gates[$guard];
 
-        exit(401);
+                // each gate must be authorized to continue request.
+                $class->authorize();
+            }
+            else
+            {
+                throw new GateNotFoundException("Unable to locate gate key '{$guard}'");
+            }
+        }
     }
 }

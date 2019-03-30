@@ -8,7 +8,7 @@
 
 namespace App\Models;
 
-use App\Classes\DB;
+use App\Classes\Database;
 
 /**
  * Class Comments
@@ -19,7 +19,7 @@ class Comments extends Model
 {
     public static function whereThreadID(int $key)
     {
-        return DB::instance()->query("
+        return Database::instance()->query("
             select
               comments.comment_id,
               comments.content,

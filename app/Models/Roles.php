@@ -8,7 +8,7 @@
 
 namespace App\Models;
 
-use App\Classes\DB;
+use App\Classes\Database;
 
 /**
  * Class Roles
@@ -19,6 +19,6 @@ class Roles extends Model
 {
     public static function all()
     {
-        return DB::instance()->query("select * from roles");
+        return Database::instance()->query("select * from roles");
     }
 }

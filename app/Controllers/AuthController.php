@@ -22,6 +22,8 @@ class AuthController extends Controller
      */
     public function login()
     {
+        $this->gates(['guest']);
+
         $this->render('auth.login', []);
     }
 
@@ -32,8 +34,9 @@ class AuthController extends Controller
     {
         /**
          * This action requires an POST request method.
+         * This action allows only guests to access.
          */
-        $this->requestGuard('POST');
+        $this->gates(['guest', 'post']);
 
         /**
          * Get the data if the user matches, otherwise an
@@ -80,7 +83,7 @@ class AuthController extends Controller
      */
     public function logout(): void
     {
-        $this->requiresAuthentication();
+        $this->gates(['auth']);
 
         auth()->logCurrentUserOut();
 

@@ -9,13 +9,13 @@
 namespace App\Models;
 
 
-use App\Classes\DB;
+use App\Classes\Database;
 
 class Threads extends Model
 {
     public static function all(): array
     {
-        return DB::instance()->query("
+        return Database::instance()->query("
             select 
                 threads.thread_id,
                 threads.title,
@@ -37,11 +37,11 @@ class Threads extends Model
 
     /**
      * @param string $slug
-     * @return DB|bool|\mysqli_result
+     * @return Database|bool|\mysqli_result
      */
     public static function whereSlug(string $slug)
     {
-        return DB::instance()->query("
+        return Database::instance()->query("
             select 
                 threads.thread_id,
                 threads.title,
@@ -63,11 +63,11 @@ class Threads extends Model
 
     /**
      * @param $topic
-     * @return DB|bool|\mysqli_result
+     * @return Database|bool|\mysqli_result
      */
     public static function whereTopic($topic)
     {
-        return DB::instance()->query("
+        return Database::instance()->query("
             select 
                 threads.thread_id,
                 threads.title,
@@ -92,11 +92,11 @@ class Threads extends Model
      * Get all the  threads from a current users username.
      *
      * @param $currentUser
-     * @return DB|bool|\mysqli_result
+     * @return Database|bool|\mysqli_result
      */
     public static function whereUsername(string $currentUser)
     {
-        return DB::instance()->query("
+        return Database::instance()->query("
             select
               users.username,
               topics.title as 'topic.title',

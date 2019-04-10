@@ -45,7 +45,7 @@
      * The current request information such as get requests,
      * post requests etc..
      */
-    $request = new App\Classes\Request($_GET, $_POST, $_SESSION);
+    $request = new App\Classes\Request($_GET, $_POST, $_SESSION, $_SERVER);
 
     /**
      * Blade templating engine, uses dependency injection.

@@ -18,10 +18,34 @@ use App\Interfaces\AuthUserInterface;
  */
 class Users extends Model implements AuthUserInterface
 {
+    /**
+     * @var string
+     */
     private $email;
+    /**
+     * @var string
+     */
     private $username;
-    private $password;
-    private $ip_address;
+    /**
+     * @var string
+     */
+    private $ipAddress;
+    /**
+     * @var string
+     */
+    private $lastLogin;
+    /**
+     * @var string
+     */
+    private $avatarUrl;
+    /**
+     * @var string
+     */
+    private $roleName;
+    /**
+     * @var array
+     */
+    private $permissions;
 
     /**
      * @return mixed
@@ -82,7 +106,7 @@ class Users extends Model implements AuthUserInterface
      */
     public function getIpAddress()
     {
-        return $this->ip_address;
+        return $this->ipAddress;
     }
 
     /**
@@ -91,9 +115,84 @@ class Users extends Model implements AuthUserInterface
      */
     public function setIpAddress($ip_address): Users
     {
-        $this->ip_address = $ip_address;
+        $this->ipAddress = $ip_address;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRoleName()
+    {
+        return $this->roleName;
+    }
+
+    /**
+     * @param string $role
+     * @return Users
+     */
+    public function setRoleName(string $role): self
+    {
+        $this->roleName = $role;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAvatarUrl(): string
+    {
+        return $this->avatarUrl;
+    }
+
+    /**
+     * @param string $avatarUrl
+     */
+    public function setAvatarUrl(string $avatarUrl): void
+    {
+        $this->avatarUrl = $avatarUrl;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastLogin(): string
+    {
+        return $this->lastLogin;
+    }
+
+    /**
+     * @param string $lastLogin
+     */
+    public function setLastLogin(string $lastLogin): void
+    {
+        $this->lastLogin = $lastLogin;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPermissions(): array
+    {
+        return $this->permissions;
+    }
+
+    /**
+     * @param array $permissions
+     * @return Users
+     */
+    public function setPermissions(array $permissions): self
+    {
+        $this->permissions = $permissions;
+
+        return $this;
+    }
+
+    public function updateLastLogin(string $timestamp)
+    {
+        Database::instance()->query("update users set last_login = '{$timestamp}' where username = '{$this->username}'");
     }
 
     /**
@@ -105,6 +204,21 @@ class Users extends Model implements AuthUserInterface
      */
     public static function whereUsernameAndPassword(string $username, string $password)
     {
-        return Database::instance()->query("select * from users where username = '{$username}' and password = '{$password}'");
+        return Database::instance()->query("
+            select
+              users.username,
+              users.email,
+              users.ip_address,
+              users.avatar_url,
+              users.last_login,
+              roles.role_id,
+              roles.name as role_name,
+              (select now()) as 'timestamp'
+            from
+              users
+            inner join roles on users.role_id = roles.role_id
+            where
+              username = '{$username}' and password = '{$password}';
+        ");
     }
 }

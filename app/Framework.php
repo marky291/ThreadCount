@@ -11,7 +11,6 @@ namespace App;
 use App\Classes\Request;
 use App\Classes\Routing;
 use App\Controllers\ErrorController;
-use App\Exceptions\FrameworkException;
 use App\Interfaces\RoutingInterface;
 use eftec\bladeone\BladeOne;
 
@@ -48,8 +47,6 @@ class Framework
     public function dispatchController(Request $request, BladeOne $template)
     {
         $controller = $this->router->controller();
-
-        var_dump($controller, class_exists($controller), method_exists($controller, $this->router->action()));
 
         if (class_exists($controller) && method_exists($controller, $this->router->action())) {
             return (new $controller($request, $template))->{$this->router->action()}();

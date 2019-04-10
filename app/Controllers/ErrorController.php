@@ -17,6 +17,6 @@ class ErrorController extends Controller
 {
     public function PageNotFound(): void
     {
-        $this->render('errors.404', ['message' => 'Uh oh! Page not found!']);
+        $this->render('errors.404', ['message' => "Uh oh! That page couldn't be found!"]);
     }
 }

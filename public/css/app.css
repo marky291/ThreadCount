@@ -10,7 +10,7 @@ html {
 }
 
 body {
-    transition: all .3s;
+    /*transition: all .3s;*/
     font-family: 'Source Sans Pro', sans-serif;
 }
 

@@ -35,7 +35,7 @@ class ThreadsController extends Controller
     /**
      * View a certain group of topics.
      */
-    public function topic()
+    public function topic(): void
     {
         $topicTitle = $this->request->get('title');
 
@@ -70,5 +70,32 @@ class ThreadsController extends Controller
         $this->render('threads.index', [
             'threads' => Threads::whereUsername($currentUser)->get()
         ]);
+    }
+
+//    /**
+//     * Get the most popular threads, those with most comments.
+//     */
+//    public function popular() : void
+//    {
+//        //
+//    }
+//
+//    /**
+//     * Get the most popular this week, also known as trending.
+//     * Popularity is determined by most comments on a thread.
+//     */
+//    public function trending() : void
+//    {
+//        //
+//    }
+
+    /**
+     * Get all the threads where they match a LIKE query.
+     */
+    public function search() : void
+    {
+//        $this->render('threads.index', [
+//            'threads' => Threads::whereTitleOrContent($searchedText)->get()
+//        ]);
     }
 }

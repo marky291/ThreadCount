@@ -8,6 +8,8 @@
 
 namespace App\Classes;
 
+use App\Exceptions\Exception;
+
 /**
  * Class MysqlDatabase
  *
@@ -55,9 +57,19 @@ class Database extends \mysqli
     }
 
     /**
+     * Singleton instance.
+     *
+     * @return Database|\mysqli
+     */
+    public static function instance()
+    {
+        return self::$instance ?? self::$instance = new self;
+    }
+
+    /**
      * @param string $query
      * @param int $resultmode
-     * @return Database
+     * @return Database|mixed
      */
     public function query($query, $resultmode = MYSQLI_STORE_RESULT)
     {
@@ -65,8 +77,12 @@ class Database extends \mysqli
 
         $result = parent::query($query, $resultmode);
 
+        if (is_bool($result)) {
+            return $result;
+        }
+
         if ($this->error) {
-            var_dump($this->error);
+           throw new Exception($this->error);
         }
 
         while ($row = $result->fetch_assoc()) {
@@ -99,12 +115,19 @@ class Database extends \mysqli
     }
 
     /**
-     * Singleton instance.
+     * Join all the resulting columns to form an array.
      *
-     * @return Database|\mysqli
+     * @return array
      */
-    public static function instance()
+    public function toArray(): array
     {
-        return self::$instance ?? self::$instance = new self;
+        $collection = [];
+
+        foreach ($this->collection as $key => $item)
+        {
+            $collection[] = array_values($item)[0];
+        }
+
+        return $collection;
     }
 }

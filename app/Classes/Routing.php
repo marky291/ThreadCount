@@ -61,7 +61,7 @@ class Routing implements RoutingInterface
     }
 
     /**
-     * Return a class namespace as autoloader would oad.
+     * Return a class namespace as a utoloader would oad.
      *
      * @param string $toClass
      * @return string

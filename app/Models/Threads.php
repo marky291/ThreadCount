@@ -108,7 +108,8 @@ class Threads extends Model
               threads
             inner join  users on threads.creator_id = users.user_id
             inner join topics on threads.topic_id = topics.topic_id
-            where users.username = '{$currentUser}';
+            where users.username = '{$currentUser}'
+            order by threads.created_at desc;
         ");
     }
 }

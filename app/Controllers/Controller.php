@@ -63,15 +63,12 @@ abstract class Controller
      *
      * @param string $blade
      * @param array $variables
-     * @throws \Exception
      */
-    public function render(string $blade, array $variables): void
+    public function render(string $blade, array $variables = []): void
     {
         try {
             echo $this->template->run($blade, $variables);
-        }
-        catch (Exception $e)
-        {
+        }  catch (\Exception $e) {
             die($e->getMessage());
         }
     }
@@ -80,9 +77,14 @@ abstract class Controller
      * Security gates requiring authorization and checks.
      *
      * @param array $guards
+     * @return Controller
      */
-    public function gates($guards = []): void
+    public function gates($guards = []): Controller
     {
+        if (!is_array($guards)) {
+            throw new GateNotFoundException('Gates must be in array format');
+        }
+
         foreach ($guards as $guard)
         {
             if (isset($this->gates[$guard]))
@@ -92,6 +94,8 @@ abstract class Controller
 
                 // each gate must be authorized to continue request.
                 $class->authorize();
+
+                return $this;
             }
             else
             {

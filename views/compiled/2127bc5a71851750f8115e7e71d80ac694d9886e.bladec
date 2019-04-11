@@ -6,8 +6,12 @@
  <div class="thread-item px-6 py-5 hover:bg-grey-lighter rounded flex justify-between items-center">
  <div class="rounded-full h-16 w-16 flex avatar-circle items-center justify-center mr-6 bg-grey"><img class="rounded-full avatar-circle" src="<?php echo static::e($thread['avatar_url']); ?>" alt=""></div>
  <div class="flex-1">
- <h4 class="font-bold md:font-semibold mb-3 tracking-tight text-black hover:text-black"><a href="/threads/show?slug=<?php echo static::e($thread['slug']); ?>" class="text-grey-darkest"><?php echo static::e($thread['title']); ?></a></h4>
- <p class="text-grey-dark text-xs"><span class="text-blue"><a title="View all threads created by <?php echo static::e($thread['username']); ?>" href="/threads/user?username=<?php echo static::e($thread['username']); ?>"><?php echo static::e($thread['username']); ?></a></span> posted at <?php echo static::e($thread['created_at']); ?></p>
+ <h4 class="font-bold md:font-semibold mb-3 tracking-tight text-black hover:text-black"><a href="/threads/show?slug=<?php echo static::e($thread['slug']); ?>" class="text-grey-darkest"><?php echo static::e(ucwords($thread['title'])); ?></a></h4>
+ <p class="text-grey-dark text-xs">
+ <span class="text-blue uppercase">
+ <a title="View all threads created by <?php echo static::e(ucwords($thread['username'])); ?>" href="/threads/user?username=<?php echo static::e($thread['username']); ?>"><?php echo static::e($thread['username']); ?></a>
+ </span>
+ posted at <?php echo static::e($thread['created_at']); ?></p>
  </div>
  <div class="flex flex-row justify-around items-center">
  <div class="mr-4">

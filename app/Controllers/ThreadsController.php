@@ -9,9 +9,7 @@
 namespace App\Controllers;
 
 use App\Models\Comments;
-use App\Models\Roles;
 use App\Models\Threads;
-use App\Models\Topics;
 
 /**
  * Class HomeController

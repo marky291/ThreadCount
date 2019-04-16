@@ -10,6 +10,8 @@ namespace App\Controllers;
 
 use App\Models\Comments;
 use App\Models\Threads;
+use App\Models\Topics;
+use Carbon\Carbon;
 
 /**
  * Class HomeController
@@ -56,6 +58,8 @@ class ThreadsController extends Controller
             'thread' => $thread,
             'comments' => Comments::whereThreadID($thread['thread_id'])->get()
         ]);
+
+        Threads::updateViewCount($thread['thread_id'], 1);
     }
 
     /**
@@ -70,30 +74,58 @@ class ThreadsController extends Controller
         ]);
     }
 
-//    /**
-//     * Get the most popular threads, those with most comments.
-//     */
-//    public function popular() : void
-//    {
-//        //
-//    }
-//
-//    /**
-//     * Get the most popular this week, also known as trending.
-//     * Popularity is determined by most comments on a thread.
-//     */
-//    public function trending() : void
-//    {
-//        //
-//    }
+    /**
+     * Get the most popular threads, those with most comments.
+     */
+    public function popular() : void
+    {
+        $this->render('threads.index', [
+            'threads' => Threads::whereMostCommented(Carbon::now()->startOfDecade())->get()
+        ]);
+    }
+
+    /**
+     * Get the most popular this week, also known as trending.
+     * Popularity is determined by most comments on a thread.
+     */
+    public function trending() : void
+    {
+        $this->render('threads.index', [
+            'threads' => Threads::whereMostCommented(Carbon::now()->subWeek())->get()
+        ]);
+    }
+
+    /**
+     * Fresh topics are those that do not have any replies made yet.
+     */
+    public function fresh() : void
+    {
+        $this->render('threads.index', [
+            'threads' => Threads::whereHasNoComments()->get()
+        ]);
+    }
 
     /**
      * Get all the threads where they match a LIKE query.
      */
     public function search() : void
     {
-//        $this->render('threads.index', [
-//            'threads' => Threads::whereTitleOrContent($searchedText)->get()
-//        ]);
+        $query = $this->request->get('query');
+
+        $this->render('threads.index', [
+            'threads' => Threads::whereTitleLike($query)->get()
+        ]);
+    }
+
+    public function create()
+    {
+        $this->gates(['auth']);
+
+        if ($this->request->isGetMethod())
+        {
+            return $this->render('threads.create', ['topics' => Topics::all()]);
+        }
+
+        var_dump($_POST);
     }
 }

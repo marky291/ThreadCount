@@ -10,8 +10,13 @@ html {
 }
 
 body {
-    /*transition: all .3s;*/
+    color: #4d545d;
     font-family: 'Source Sans Pro', sans-serif;
+}
+
+p {
+    font-size: 14px;
+    line-height: 20px;
 }
 
 .sidebar {
@@ -81,6 +86,8 @@ a {
 
 .topic-title {
     color: inherit;
+    font-size:0.6rem;
+    font-weight: 700;
 }
 
 .sidebar .selected, nav .selected {
@@ -93,4 +100,9 @@ a {
 }
 .sidebar ul li>a:hover {
     background-color: #f6f6f6;
+}
+
+
+.text-black-transparent-75 {
+    color: rgba(0,0,0,.75);
 }

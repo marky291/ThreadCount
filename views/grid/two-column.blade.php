@@ -5,7 +5,9 @@
         <div class="container mx-auto max-w-xl">
             <div class="flex mb-4">
                 <div class="w-1/5">
-                    @include('sidebar')
+                    <div id="sticker">
+                        @include('sidebar')
+                    </div>
                 </div>
                 <div class="w-5/6">
                     <div class="container py-4 px-3">

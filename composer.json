@@ -16,8 +16,10 @@
         ]
     },
     "require": {
+        "ext-json": "*",
         "ext-mysqli": "*",
         "eftec/bladeone": "^3.19",
-        "adbario/php-dot-notation": "^2.2"
+        "adbario/php-dot-notation": "^2.2",
+        "nesbot/carbon": "^2.16"
     }
 }

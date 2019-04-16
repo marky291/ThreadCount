@@ -19,6 +19,10 @@ use App\Interfaces\AuthUserInterface;
 class Users extends Model implements AuthUserInterface
 {
     /**
+     * @var int
+     */
+    private $id;
+    /**
      * @var string
      */
     private $email;
@@ -47,6 +51,20 @@ class Users extends Model implements AuthUserInterface
      */
     private $permissions;
 
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
     /**
      * @return mixed
      */
@@ -140,6 +158,25 @@ class Users extends Model implements AuthUserInterface
     }
 
     /**
+     * Pass an array of roles to check if the user has.
+     *
+     * @param array $roleNames
+     * @return bool
+     */
+    public function hasRole(array $roleNames): bool
+    {
+        foreach ($roleNames as $role)
+        {
+            if ($role === $this->getRoleName())
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @return string
      */
     public function getAvatarUrl(): string
@@ -206,6 +243,7 @@ class Users extends Model implements AuthUserInterface
     {
         return Database::instance()->query("
             select
+              users.user_id as `user_id`,
               users.username,
               users.email,
               users.ip_address,
@@ -220,5 +258,10 @@ class Users extends Model implements AuthUserInterface
             where
               username = '{$username}' and password = '{$password}';
         ");
+    }
+
+    public static function saveNewAccountDetails(string $forename, string $surname, string $email, string $password)
+    {
+
     }
 }

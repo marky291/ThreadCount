@@ -73,6 +73,13 @@ abstract class Controller
         }
     }
 
+    public function respondWithJson(array $attributes)
+    {
+        header('Content-type: application/json');
+
+        echo json_encode($attributes);
+    }
+
     /**
      * Security gates requiring authorization and checks.
      *
@@ -102,5 +109,7 @@ abstract class Controller
                 throw new GateNotFoundException("Unable to locate gate key '{$guard}'");
             }
         }
+
+        return $this;
     }
 }

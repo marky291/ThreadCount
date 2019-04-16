@@ -21,19 +21,27 @@
             </li>
             @endif
             <li class="mb-3 lg:mb-2">
-                <a class="hover:underline text-grey-darkest" href="/threads/trending">Popular This Week</a>
+                <a class="hover:underline text-grey-darkest {{ css_status(isCurrentUri('/threads/trending')) }}" href="/threads/trending">Popular This Week</a>
             </li>
             <li class="mb-3 lg:mb-2">
-                <a class="hover:underline text-grey-darkest" href="/threads/popular">Popular All Time</a>
+                <a class="hover:underline text-grey-darkest {{ css_status(isCurrentUri('/threads/popular')) }}" href="/threads/popular">Popular All Time</a>
             </li>
             <li class="mb-3 lg:mb-2">
-                <a class="hover:underline text-grey-darkest" href="/threads/popular">No Repies Yet</a>
+                <a class="hover:underline text-grey-darkest {{ css_status(isCurrentUri('/threads/fresh')) }}" href="/threads/fresh">No Repies Yet</a>
             </li>
         </ul>
     </div>
-    @if (auth()->check())
-    <button class="text-xs bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-full">
-        New Thread
-    </button>
-    @endif
+    <div class="mb-8">
+        @if (auth()->check())
+            <a href="/threads/create">
+                <button class="text-xs bg-blue-light w-full hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-r">
+                    New Discussion
+                </button>
+            </a>
+        @endif
+    </div>
+    <div class="mb-8">
+        <p class="text-grey mb-3">Sponsored</p>
+        <img src="http://lit.ie/Prospectus/Picture_Library/LIT_2019_PROSPECTUS.jpg" alt="ad for LIT">
+    </div>
 </div>

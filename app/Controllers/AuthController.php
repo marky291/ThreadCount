@@ -64,6 +64,7 @@ class AuthController extends Controller
         * model and apply it to the $_SESSION.
         */
        $user = new Users();
+       $user->setId($result['user_id']);
        $user->setUsername($result['username']);
        $user->setEmail($result['email']);
        $user->setRoleName($result['role_name']);

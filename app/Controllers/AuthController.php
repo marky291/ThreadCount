@@ -57,7 +57,8 @@ class AuthController extends Controller
            ]]);
        }
 
-       $permissions = Permissions::whereRoleID($result['role_id']);
+        // Store the user login, time and ip_address
+        $log = Users::storeNewLoginLogFor($result['user_id']);
 
        /**
         * Credentials from the result exist, lets build a user
@@ -68,14 +69,9 @@ class AuthController extends Controller
        $user->setUsername($result['username']);
        $user->setEmail($result['email']);
        $user->setRoleName($result['role_name']);
-       $user->setIpAddress($result['ip_address']);
-       $user->setLastLogin($result['timestamp']);
+       $user->setIpAddress($log['ip_address']);
+       $user->setLastLoginTime($log['login_time']);
        $user->setAvatarUrl($result['avatar_url']);
-       $user->setPermissions($permissions->toArray());
-
-        // we save the new time after we have the old time.
-        // so that we can see the OLD login timestamp not the CURRENT.
-       $user->updateLastLogin($result['timestamp']);
 
        /**
         * Since the user model is now built, lets log it into the
@@ -96,7 +92,7 @@ class AuthController extends Controller
     {
         $this->gates(['auth']);
 
-        auth()->logCurrentUserOut();
+        auth()->logout();
 
         redirect('threads?topic=general');
     }
@@ -120,42 +116,41 @@ class AuthController extends Controller
         $this->gates(['guest', 'post']);
 
         /**
+         * Important we check that the user exists first, since this must be unique.
+         */
+        $userExists = Users::whereUsername($this->request->post('username'))->first();
+
+        /**
+         * Redirect back with error message and a flash of the data.
+         */
+        if ($userExists == true)
+        {
+            return $this->render('auth.register', [
+                'errors' => [
+                    'message' => 'Username already taken',
+                ],
+                'flash' => [
+                    'username' => $this->request->post('username'),
+                    'email' => $this->request->post('email')
+                ]
+            ]);
+        }
+
+        /**
          * Get the data if the user matches, otherwise an
          * empty result will mean nothing was found.
          */
         $result = Users::saveNewAccountDetails(
             $this->request->post('username'),
+            $this->request->post('email'),
             $this->request->post('password')
-        )->first();
+        );
 
         /**
-         * We want to redirect back to login with the errors
-         * if the result was an empty set of data.
+         * Redirect to the login page to allow user to login.
          */
-        if (!$result) {
-            return $this->render('auth.login', ['errors' => [
-                'username' => 'Invalid Credentials Entered',
-                'password' => 'Invalid Credentials Entered'
-            ]]);
-        }
-
-        /**
-         * Credentials from the result exist, lets build a user
-         * model and apply it to the $_SESSION.
-         */
-        $user = new Users();
-        $user->setUsername($result['username']);
-        $user->setEmail($result['email']);
-
-        /**
-         * Since the user model is now built, lets log it into the
-         * auth class that handles the authentication.
-         */
-        auth()->logUserIn($user);
-
-        /**
-         * Redirect to the homepage.
-         */
-        return redirect('');
+        return $this->render('auth.login', ['success' => [
+            'message' => 'You can now login with your new account'
+        ]]);
     }
 }

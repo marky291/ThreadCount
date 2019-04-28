@@ -4,48 +4,45 @@
 
     <h2 class="mb-6">Register Account</h2>
 
+    @if (isset($errors))
+        <div class="mb-6 bg-red-lightest border-l-4 border-red text-red-dark p-4" role="alert">
+            <p class="font-bold">Registration failed.</p>
+            <p>{{ $errors['message'] }}.</p>
+        </div>
+    @endif
+
     <div class="container mx-auto max-w-xl">
-        <form class="w-full" method="post" action="/auth/register">
+        <form class="w-full" method="post" action="/auth/register" id="register-account-form">
             <div class="flex flex-wrap -mx-3 mb-6">
-                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-first-name">
-                        First Name
+                <div class="w-full px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="username">
+                        Username
                     </label>
-                    <input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" name="forename">
-                    {{--<p class="text-red text-xs italic">Please fill out this field.</p>--}}
-                </div>
-                <div class="w-full md:w-1/2 px-3">
-                    <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-last-name">
-                        Last Name
-                    </label>
-                    <input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-grey" id="grid-last-name" type="text" name="surname">
+                    <input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-grey" id="username" type="text" name="username" value="{{ $flash['username'] or '' }}">
                 </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
                 <div class="w-full px-3">
-                    <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-email">
+                    <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="email">
                         Email
                     </label>
-                    <input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-grey" id="grid-email" type="email" name="email">
-                    <p class="text-grey-dark text-xs italic">Make it as long and as crazy as you'd like</p>
+                    <input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-grey" id="email" type="email" name="email" value="{{ $flash['email'] or '' }}">
                 </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
                 <div class="w-full px-3">
-                    <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-password">
+                    <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="password">
                         Password
                     </label>
-                    <input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-grey" id="grid-password" type="password" name="password">
-                    <p class="text-grey-dark text-xs italic">Make it as long and as crazy as you'd like</p>
+                    <input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-grey" id="password" type="password" name="password" autocomplete="new-password">
                 </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
                 <div class="w-full px-3">
-                    <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-password">
+                    <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="retypePassword">
                         Retype Password
                     </label>
-                    <input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-grey" id="grid-password-verified" type="password" name="passwordVerification">
-                    <p class="text-grey-dark text-xs italic">Make it as long and as crazy as you'd like</p>
+                    <input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-grey" id="retypePassword" type="password" name="retypePassword">
                 </div>
             </div>
             <div class="flex items-center justify-between">
@@ -55,4 +52,31 @@
             </div>
         </form>
     </div>
+
+    @push('scripts')
+        <script>
+            $("#register-account-form").validate({
+                rules: {
+                    username: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 35,
+                    },
+                    email: {
+                        required: true,
+                        email: true,
+                    },
+                    password: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 45,
+                    },
+                    retypePassword: {
+                        equalTo: "#password"
+                    }
+                }
+            });
+        </script>
+    @endpush
+
 @endsection

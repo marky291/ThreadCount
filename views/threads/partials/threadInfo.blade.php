@@ -1,7 +1,7 @@
 
 <div class="flex flex-row justify-around self-start">
     <div class="mr-4">
-        <i class="fas fa-eye text-grey"></i> {{ $thread['count.views'] }}
+        <i class="fas fa-eye {{ $hasViewed ? 'text-blue-light' : 'text-grey' }}"></i> {{ $thread['count.user.views'] }}
     </div>
     <div class="mr-4">
         <i class="fas fa-comment text-grey"></i> {{ $thread['count.comments'] }}

@@ -8,6 +8,8 @@
 
 namespace App\Gates;
 
+use App\Exceptions\UnauthorizedException;
+
 /**
  * Class RequestPostGate
  *
@@ -28,6 +30,6 @@ class RequestPostGate implements GateInterface
             return true;
         }
 
-        exit('Access to this resource is restricted.');
+        throw new UnauthorizedException('Invalid role permission');
     }
 }

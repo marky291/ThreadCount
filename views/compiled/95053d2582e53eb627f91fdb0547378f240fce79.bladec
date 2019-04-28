@@ -1,0 +1,10 @@
+<p class="text-base truncate text-grey-darkest">
+ <span class="text-blue">
+ <a class="font-bold text-blue" title="View all threads created by <?php echo static::e($username); ?>" href="/threads/user?username=<?php echo static::e($username); ?>">
+ <?php echo static::e(ucfirst($username)); ?>
+
+ </a>
+ </span>
+ ∙ <?php echo static::e(Carbon\Carbon::createFromTimestamp(strtotime($created_at))->diffForHumans()); ?>
+
+</p>

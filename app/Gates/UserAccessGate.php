@@ -8,6 +8,8 @@
 
 namespace App\Gates;
 
+use App\Exceptions\UnauthorizedException;
+
 /**
  * Class UserAuthenticatedGate
  *

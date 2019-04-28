@@ -1,0 +1,14 @@
+
+<span class="karma">
+ <i class="fas fa-heart mr-1"></i> <span class="karma-score"><?php echo static::e($score); ?></span>
+</span>
+
+<?php $this->startPush('scripts'); ?>
+ <script>
+ $(".karma").click(function() {
+ console.log("Clicked karma");
+ $(this).toggleClass('text-blue');
+ $(this).find("karma-score").val += 1;
+ });
+ </script>
+<?php $this->stopPush(); ?>

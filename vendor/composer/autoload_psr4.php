@@ -8,6 +8,10 @@ $baseDir = dirname($vendorDir);
 return array(
     'eftec\\tests\\' => array($vendorDir . '/eftec/bladeone/tests'),
     'eftec\\bladeone\\' => array($vendorDir . '/eftec/bladeone/lib'),
+    'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
+    'Symfony\\Contracts\\' => array($vendorDir . '/symfony/contracts'),
+    'Symfony\\Component\\Translation\\' => array($vendorDir . '/symfony/translation'),
+    'Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),
     'App\\' => array($baseDir . '/app'),
     'Adbar\\' => array($vendorDir . '/adbario/php-dot-notation/src'),
 );

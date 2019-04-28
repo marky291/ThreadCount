@@ -8,6 +8,7 @@
 
 namespace App\Controllers;
 
+use App\Exceptions\UnauthorizedException;
 use App\Models\Comments;
 use App\Models\Threads;
 use App\Models\Topics;
@@ -28,7 +29,7 @@ class ThreadsController extends Controller
     public function index()
     {
         $this->render('threads.index', [
-            'threads' => Threads::all(),
+            'threads' => Threads::all()
         ]);
     }
 
@@ -41,7 +42,7 @@ class ThreadsController extends Controller
 
         $this->render('threads.index', [
             'currentTopic' => $topicTitle,
-            'threads' => Threads::whereTopic($topicTitle)->get(),
+            'threads' => Threads::whereTopicTitle($topicTitle)->get(),
         ]);
     }
 
@@ -59,7 +60,9 @@ class ThreadsController extends Controller
             'comments' => Comments::whereThreadID($thread['thread_id'])->get()
         ]);
 
-        Threads::updateViewCount($thread['thread_id'], 1);
+        if (auth()->check()) {
+            Threads::viewedByUserEvent($thread['thread_id'], auth()->user()->getId());
+        }
     }
 
     /**
@@ -117,6 +120,68 @@ class ThreadsController extends Controller
         ]);
     }
 
+    /**
+     * Delete a thread request.
+     */
+    public function destroy()
+    {
+        $this->gates(['auth', 'post']);
+
+        $threadID = $this->request->post('threadID');
+
+        Threads::deleteWhereID($threadID);
+    }
+
+    /**
+     * Update/Edit an existing thread
+     */
+    public function update()
+    {
+        $this->gates(['auth']);
+
+        if ($this->request->isGetMethod())
+        {
+            $thread = Threads::whereSlug($this->request->get('slug'))->first();
+            $userOwnsComment = $thread['username'] == auth()->user()->getUsername();
+            $userHasRole = auth()->user()->hasRole(['super', 'admin', 'moderator']);
+
+            if ($userHasRole || $userOwnsComment)
+            {
+                $this->render('threads.create', ['thread' => $thread, 'topics' => Topics::all()]);
+            }
+            else
+            {
+                throw new UnauthorizedException('User can not edit this thread');
+            }
+        }
+
+        $this->gates(['post']);
+
+        $thread = Threads::whereSlug($this->request->post('threadSlug'))->first();
+
+        $title = $this->request->post('title');
+        $newSlug = str_slug($title);
+        $content = $this->request->post('content');
+        $topicID = $this->request->post('topicID');
+
+        $userOwnsComment = $thread['username'] == auth()->user()->getUsername();
+
+        $userHasRole = auth()->user()->hasRole(['super', 'admin', 'moderator']);
+
+        if ($userHasRole || $userOwnsComment)
+        {
+            Threads::updateThreadWhereID($thread['thread_id'], $title, $newSlug, $content, $topicID);
+
+            return redirect("threads/show?slug={$newSlug}");
+        }
+
+        throw new UnauthorizedException('User cannot edit this thread');
+    }
+
+    /**
+     * Creation of a new thread.
+     * Handles both get and post requests.
+     */
     public function create()
     {
         $this->gates(['auth']);
@@ -126,6 +191,20 @@ class ThreadsController extends Controller
             return $this->render('threads.create', ['topics' => Topics::all()]);
         }
 
-        var_dump($_POST);
+        $this->gates(['post']);
+
+        Threads::saveFreshModel(
+            auth()->user()->getId(),
+            $this->request->post('topicID'),
+            $this->request->post('title'),
+            $this->request->post('content')
+        );
+
+        $slug = str_slug($this->request->post('title'));
+
+        /**
+         * Redirect to the homepage.
+         */
+        return redirect("/threads/show?slug={$slug}");
     }
 }

@@ -21,4 +21,11 @@ interface AuthUserInterface
      * @return mixed
      */
     public function getUsername();
+
+    /**
+     * The last time the user logged in.
+     *
+     * @return mixed
+     */
+    public function getLastLoginTime();
 }

@@ -1,0 +1,32 @@
+<?php $_shouldextend[1]=1; ?>
+
+<?php $this->startSection('grid'); ?>
+ <div class="w-full px-6 py-12 border-t">
+ <div class="container mx-auto max-w-xl">
+ <div class="flex mb-4">
+ <div class="w-1/5">
+ <div id="sticker">
+ <?php echo $this->runChild('sidebar'); ?>
+ </div>
+ </div>
+ <div class="w-5/6">
+ <?php if(auth()->check()): ?>
+ <div class=" text-grey text-xs flex flex-row px-6">
+ <div class="text-left flex-1">
+ <?php echo static::e(config('project.name')); ?> by <?php echo static::e(config('project.author')); ?> (<?php echo static::e(config('project.knumber')); ?>)
+ </div>
+ <div class="text-right flex-1">
+ Your account last logged in <?php echo static::e(\Carbon\Carbon::createFromTimeString(auth()->user()->getLastLoginTime())->diffForHumans()); ?>
+
+ </div>
+ </div>
+ <?php endif; ?>
+ <div class="container py-4 px-3">
+ <?php echo $this->yieldContent('content'); ?>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+<?php $this->stopSection(); ?>
+<?php if (@$_shouldextend[1]) { echo $this->runChild('master'); } ?>

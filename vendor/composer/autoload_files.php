@@ -6,9 +6,11 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => $vendorDir . '/symfony/polyfill-mbstring/bootstrap.php',
     'd767e4fc2dc52fe66584ab8c6684783e' => $vendorDir . '/adbario/php-dot-notation/src/helpers.php',
     'debb7580b469140901e5152836b72376' => $baseDir . '/app/Helpers/shorthand.php',
     '682407acfbebb18080a67688adee70ab' => $baseDir . '/app/Helpers/request.php',
     '062fd04b0ad4460a3511b0f7a39716db' => $baseDir . '/app/Helpers/encryption.php',
     '8b95af0fbdbc84a26acb54f39df14e65' => $baseDir . '/app/Helpers/stylesheet.php',
+    '80e1daf49957b6c095055580ef7c5501' => $baseDir . '/app/Helpers/str_helpers.php',
 );

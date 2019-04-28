@@ -1,0 +1,54 @@
+<?php $_shouldextend[1]=1; ?>
+
+<?php $this->startSection('content'); ?>
+ <?php if(count($comments) < 1): ?>
+ <div class="flex flex-col items-center">
+ <img src="https://ya-webdesign.com/images/vision-vector-colorful-2.png"
+ alt="A person searching" style="height:200px; width: 200px;">
+
+ <h4 class="text-grey-darkest">Uh oh! There are no comments to be shown!</h4>
+ </div>
+ <?php else: ?>
+ <?php $__currentLoopData = $comments; $this->addLoop($__currentLoopData); foreach($__currentLoopData as $comment): $this->incrementLoopIndices(); $loop = $this->getFirstLoop(); ?>
+ <div class="thread-item px-6 py-8 hover:bg-grey-lightest rounded flex">
+ <div class="">
+ <div class="rounded-full h-16 w-16 flex avatar-circle items-center justify-center mr-6 bg-grey">
+ <a href="/profile/update?username=<?php echo static::e($comment['user.username']); ?>">
+ <img class="border hover:border-solid hover:border-grey hover:shadow rounded-full avatar-circle" src="//www.gravatar.com/avatar/c2d52abc9f91d455e15a48d59fecd746?s=100&d=https%3A%2F%2Fs3.amazonaws.com%2Flaracasts%2Fimages%2Fdefault-square-avatar.jpg" alt="">
+ </a>
+ </div>
+ </div>
+ <div class="flex-1">
+ <div class="flex justify-between">
+ <div class="flex-1">
+ <p class="text-base truncate text-grey-darkest">
+ <span class="text-blue">
+ <a class="font-bold text-blue" title="View all threads created by <?php echo static::e($comment['user.username']); ?>" href="/threads/user?username=<?php echo static::e($comment['user.username']); ?>">
+ <?php echo static::e(ucfirst($comment['user.username'])); ?>
+
+ </a>
+ </span>
+ ∙ <?php echo static::e(Carbon\Carbon::createFromTimestamp(strtotime($comment['created_at']))->diffForHumans()); ?>
+
+ on '<a class="text-blue hover:text-blue-darker" href="/threads/show?slug=<?php echo static::e($comment['thread.slug']); ?>"><?php echo static::e($comment['thread.title']); ?></a>'
+ </p>
+ </div>
+ </div>
+
+ <div class="mt-3">
+ <p><?php echo static::e(nl2br($comment['content'])); ?></p>
+ </div>
+
+ <div class="flex mt-5 text-grey-dark">
+ <?php if(auth()->check() && (auth()->user()->hasRole(['super', 'admin', 'moderator']) ||  auth()->user()->getId() == $comment['user.user_id'])): ?>
+ <div class="flex-1 self-center text-right text-xs hover:text-grey-darkest">
+ <button class="remove-comment px-3 text-grey hover:text-grey-darker text-xs font-bold" data-commentID="<?php echo static::e($comment['comment_id']); ?>">Remove</button>
+ </div>
+ <?php endif; ?>
+ </div>
+ </div>
+ </div>
+ <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
+ <?php endif; ?>
+<?php $this->stopSection(); ?>
+<?php if (@$_shouldextend[1]) { echo $this->runChild('grid.two-column'); } ?>

@@ -10,6 +10,7 @@ namespace App\Classes;
 
 use App\Interfaces\AuthUserInterface;
 use App\Models\Users;
+use Carbon\Carbon;
 
 class Auth
 {
@@ -64,7 +65,7 @@ class Auth
     /**
      * Log a user out of the system.
      */
-    public function logCurrentUserOut()
+    public function logout(): void
     {
         if ($this->check())
         {

@@ -9,10 +9,13 @@
 namespace App\Controllers;
 
 use App\Classes\Request;
+use App\Gates\ForumAccessGate;
 use App\Gates\GateInterface;
 use App\Gates\GuestAccessGate;
+use App\Gates\RequiresAdminGate;
 use App\Gates\UserAccessGate;
 use App\Gates\RequestPostGate;
+use Carbon\Carbon;
 use eftec\bladeone\BladeOne;
 use App\Exceptions\Exception;
 use App\Exceptions\GateNotFoundException;
@@ -28,9 +31,11 @@ abstract class Controller
      * @var array
      */
     protected $gates = [
+        'access' => ForumAccessGate::class,
         'auth' => UserAccessGate::class,
         'guest' => GuestAccessGate::class,
         'post' => RequestPostGate::class,
+        'admin' => RequiresAdminGate::class,
     ];
 
     /**
@@ -56,6 +61,8 @@ abstract class Controller
         $this->request = $request;
 
         $this->template = $blade;
+
+        $this->gates(['access']);
     }
 
     /**
@@ -73,6 +80,13 @@ abstract class Controller
         }
     }
 
+    /**
+     * Return a json response...
+     *
+     * @deprecated Cant get to work? -_-
+     *
+     * @param array $attributes
+     */
     public function respondWithJson(array $attributes)
     {
         header('Content-type: application/json');
@@ -101,8 +115,6 @@ abstract class Controller
 
                 // each gate must be authorized to continue request.
                 $class->authorize();
-
-                return $this;
             }
             else
             {

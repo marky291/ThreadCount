@@ -46,10 +46,6 @@ class Users extends Model implements AuthUserInterface
      * @var string
      */
     private $roleName;
-    /**
-     * @var array
-     */
-    private $permissions;
 
     /**
      * @return int
@@ -195,7 +191,7 @@ class Users extends Model implements AuthUserInterface
     /**
      * @return string
      */
-    public function getLastLogin(): string
+    public function getLastLoginTime(): string
     {
         return $this->lastLogin;
     }
@@ -203,33 +199,22 @@ class Users extends Model implements AuthUserInterface
     /**
      * @param string $lastLogin
      */
-    public function setLastLogin(string $lastLogin): void
+    public function setLastLoginTime(string $lastLogin): void
     {
         $this->lastLogin = $lastLogin;
     }
 
-    /**
-     * @return array
-     */
-    public function getPermissions(): array
+    public static function storeNewLoginLogFor(int $userID)
     {
-        return $this->permissions;
-    }
-
-    /**
-     * @param array $permissions
-     * @return Users
-     */
-    public function setPermissions(array $permissions): self
-    {
-        $this->permissions = $permissions;
-
-        return $this;
-    }
-
-    public function updateLastLogin(string $timestamp)
-    {
-        Database::instance()->query("update users set last_login = '{$timestamp}' where username = '{$this->username}'");
+        $ipAddress = $_SERVER['REMOTE_ADDR'];
+        /**
+         * Store the new login details.
+         */
+        Database::instance()->query("insert into user_login_log (user_id, ip_address) values ('{$userID}', '{$ipAddress}')");
+        /**
+         * Get the new login details as a result.
+         */
+        return Database::instance()->query("select * from user_login_log ull where ull.user_id = '{$userID}' order by ull.login_time desc limit 1")->first();
     }
 
     /**
@@ -241,14 +226,14 @@ class Users extends Model implements AuthUserInterface
      */
     public static function whereUsernameAndPassword(string $username, string $password)
     {
+        $encryptedPassword = encrypt($password);
+
         return Database::instance()->query("
             select
               users.user_id as `user_id`,
               users.username,
               users.email,
-              users.ip_address,
               users.avatar_url,
-              users.last_login,
               roles.role_id,
               roles.name as role_name,
               (select now()) as 'timestamp'
@@ -256,12 +241,52 @@ class Users extends Model implements AuthUserInterface
               users
             inner join roles on users.role_id = roles.role_id
             where
-              username = '{$username}' and password = '{$password}';
+              username = '{$username}' and password = '{$encryptedPassword}';
         ");
     }
 
-    public static function saveNewAccountDetails(string $forename, string $surname, string $email, string $password)
+    public static function saveNewAccountDetails(string $username, string $email, string $password)
     {
+        $encryptedPassword = encrypt($password);
 
+        return Database::instance()->query("
+            insert into users 
+                (username, email, password) 
+            values 
+                ('{$username}', '{$email}', '{$encryptedPassword}');
+        ");
+    }
+
+    public static function updateDetails(int $userID, string $email, string $username, string $avatarUrl, int $roleID = null)
+    {
+        return Database::instance()->query("
+            update 
+                users 
+            set 
+                email = '{$email}', 
+                username = '{$username}', 
+                avatar_url = '{$avatarUrl}', 
+                role_id = '{$roleID}' 
+            where 
+                users.user_id = '{$userID}';
+        ");
+    }
+
+    /**
+     * Get a user from database by its ID.
+     *
+     * @param string $username
+     * @return Database|bool|mixed|\mysqli_result
+     */
+    public static function whereUsername(string $username)
+    {
+        return Database::instance()->query("
+            select
+                *
+            from
+                users
+            where
+                username = '{$username}';
+        ");
     }
 }

@@ -12,7 +12,8 @@
             "app/Helpers/shorthand.php",
             "app/Helpers/request.php",
             "app/Helpers/encryption.php",
-            "app/Helpers/stylesheet.php"
+            "app/Helpers/stylesheet.php",
+            "app/Helpers/str_helpers.php"
         ]
     },
     "require": {

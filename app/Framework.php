@@ -11,6 +11,9 @@ namespace App;
 use App\Classes\Request;
 use App\Classes\Routing;
 use App\Controllers\ErrorController;
+use App\Exceptions\DatabaseQueryException;
+use App\Exceptions\Exception;
+use App\Exceptions\UnauthorizedException;
 use App\Interfaces\RoutingInterface;
 use eftec\bladeone\BladeOne;
 
@@ -46,12 +49,25 @@ class Framework
      */
     public function dispatchController(Request $request, BladeOne $template)
     {
-        $controller = $this->router->controller();
+        try {
 
-        if (class_exists($controller) && method_exists($controller, $this->router->action())) {
-            return (new $controller($request, $template))->{$this->router->action()}();
+            $controller = $this->router->controller();
+
+            if (class_exists($controller) && method_exists($controller, $this->router->action())) {
+                return (new $controller($request, $template))->{$this->router->action()}();
+            }
+
+            return (new ErrorController($request, $template))->PageNotFound();
+
         }
-
-        return (new ErrorController($request, $template))->PageNotFound();
+        catch (DatabaseQueryException $e)
+        {
+            echo $e;
+            return (new ErrorController($request, $template))->DatabaseError($e->getMessage());
+        }
+        catch (UnauthorizedException $e)
+        {
+            return (new ErrorController($request, $template))->UnauthorizedError();
+        }
     }
 }

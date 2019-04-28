@@ -61,13 +61,13 @@ a {
 }
 
 .thread-electrical {
-    color: #09d7c1;
-    border: 1px solid #09d7c1;
+    color: #837eb6;
+    border: 1px solid #837eb6;
 }
 .thread-electrical:hover {
     color: white;
-    border: 1px solid #09d7c1;
-    background-color: #09d7c1;
+    border: 1px solid #837eb6;
+    background-color: #837eb6;
 }
 
 .thread-programming {
@@ -102,7 +102,21 @@ a {
     background-color: #f6f6f6;
 }
 
-
 .text-black-transparent-75 {
     color: rgba(0,0,0,.75);
+}
+
+input.error, textarea.error {
+    border: 1px solid #e3342f !important;
+    background: white !important;
+}
+label.error {
+    font-style: italic;
+    font-size: 0.75rem;
+    color: #e3342f;
+    margin-top: .75rem;
+}
+
+.strikeout {
+    text-decoration: line-through;
 }

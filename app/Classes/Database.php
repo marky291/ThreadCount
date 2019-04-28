@@ -8,6 +8,7 @@
 
 namespace App\Classes;
 
+use App\Exceptions\DatabaseQueryException;
 use App\Exceptions\Exception;
 
 /**
@@ -77,12 +78,13 @@ class Database extends \mysqli
 
         $result = parent::query($query, $resultmode);
 
-        if (is_bool($result)) {
-            return $result;
+        if ($this->error) {
+            // bubble back to framework to display error page.
+           throw new DatabaseQueryException($this->error);
         }
 
-        if ($this->error) {
-           throw new Exception($this->error);
+        if (is_bool($result)) {
+            return $result;
         }
 
         while ($row = $result->fetch_assoc()) {
@@ -102,6 +104,16 @@ class Database extends \mysqli
     public function first()
     {
         return $this->collection[0] ?? $this->collection;
+    }
+
+    /**
+     * Count the items in the collection
+     *
+     * @return int
+     */
+    public function count(): int
+    {
+        return count($this->collection);
     }
 
     /**

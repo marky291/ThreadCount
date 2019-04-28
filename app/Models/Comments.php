@@ -23,12 +23,10 @@ class Comments extends Model
             select
               comments.comment_id,
               comments.content,
-              comments.karma_score,
               comments.created_at,
               users.user_id as 'user.user_id',
               users.username as 'user.username',
-              users.avatar_url as 'user.avatar',
-              users.ip_address as 'user.ip_address'
+              users.avatar_url as 'user.avatar'
             from
               comments
                 inner join users on comments.creator_id = users.user_id
@@ -42,12 +40,10 @@ class Comments extends Model
             select
               comments.comment_id,
               comments.content,
-              comments.karma_score,
               comments.created_at,
               users.user_id as 'user.user_id',
               users.username as 'user.username',
-              users.avatar_url as 'user.avatar',
-              users.ip_address as 'user.ip_address'
+              users.avatar_url as 'user.avatar'
             from
               comments
                 inner join users on comments.creator_id = users.user_id
@@ -79,10 +75,37 @@ class Comments extends Model
      * @param string $commentID
      * @return Database|bool|mixed|\mysqli_result
      */
-    public static function deleteID(string $commentID)
+    public static function deleteWhereID(string $commentID)
     {
         return Database::instance()->query("
             delete from  comments where comment_id = '{$commentID}';
+        ");
+    }
+
+    /**
+     * Get all comments made by a certain user.
+     *
+     * @param $currentUser
+     * @return Database|bool|\mysqli_result
+     */
+    public static function whereUserUsername(string $currentUser)
+    {
+        return Database::instance()->query("
+            select
+              comments.comment_id,
+              comments.content,
+              comments.created_at,
+              users.user_id as 'user.user_id',
+              users.username as 'user.username',
+              users.avatar_url as 'user.avatar',
+              threads.title as 'thread.title',
+              threads.slug as 'thread.slug'
+            from
+              comments
+            inner join  users on comments.creator_id = users.user_id
+            inner join threads on comments.thread_id = threads.thread_id
+            where users.username = '{$currentUser}'
+            order by comments.created_at desc;
         ");
     }
 }

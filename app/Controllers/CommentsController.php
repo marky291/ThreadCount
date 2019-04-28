@@ -12,6 +12,14 @@ use App\Models\Comments;
  */
 class CommentsController extends Controller
 {
+
+    public function user()
+    {
+        $comments = Comments::whereUserUsername($this->request->get('username'))->get();
+
+        $this->render('comments.index', ['comments' => $comments]);
+    }
+
     public function store()
     {
         $this->gates(['auth', 'post']);
@@ -38,7 +46,7 @@ class CommentsController extends Controller
 
         if ($userHasRole || $userOwnsComment)
         {
-            $status = Comments::deleteID($commentID);
+            $status = Comments::deleteWhereID($commentID);
 
             return json_encode(['status' => $status]);
         }

@@ -21,7 +21,7 @@ return [
         /**
          * The database/schema to connect to.
          */
-        'schema' => 'mydb',
+        'schema' => 'ThreadCount',
         /**
          * Port for connectivity
          */

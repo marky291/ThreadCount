@@ -19,4 +19,14 @@ class ErrorController extends Controller
     {
         $this->render('errors.404', ['message' => "Uh oh! That page couldn't be found!"]);
     }
+
+    public function DatabaseError(string $error_message): void
+    {
+        $this->render('errors.database', ['message' => $error_message]);
+    }
+
+    public function UnauthorizedError(): void
+    {
+        $this->render('errors.unauthorized', ['message' => 'HALT! You are not allowed to be here.']);
+    }
 }

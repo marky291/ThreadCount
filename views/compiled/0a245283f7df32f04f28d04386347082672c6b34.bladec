@@ -1,0 +1,15 @@
+<?php $_shouldextend[2]=1; ?>
+
+<?php $this->startSection('content'); ?>
+ <div class="flex mb-4">
+ <div class="w-1/5">
+ <?php echo $this->runChild('sidebar'); ?>
+ </div>
+ <div class="w-4/5">
+ <div class="container py-4 px-3">
+ <?php echo $this->yieldContent('content'); ?>
+ </div>
+ </div>
+ </div>
+<?php $this->stopSection(); ?>
+<?php if (@$_shouldextend[2]) { echo $this->runChild('master'); } ?>

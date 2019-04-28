@@ -19,6 +19,6 @@ class Roles extends Model
 {
     public static function all()
     {
-        return Database::instance()->query("select * from roles");
+        return Database::instance()->query("select * from roles")->get();
     }
 }

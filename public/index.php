@@ -8,6 +8,11 @@
  */
 
     /**
+     * Set the default timezone
+     */
+    date_default_timezone_set('Europe/London');
+
+    /**
      * Define where the base path is for loading the bootstrap.
      */
     define('base_path', __DIR__ . '/../');

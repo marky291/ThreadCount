@@ -4,8 +4,6 @@
     <div class="controller">
         <div class="row">
             <div class="col">
-
-
                 <div class="flex">
                     <div class="flex-1 self-center">
                         <h2>{{ $message }}</h2>

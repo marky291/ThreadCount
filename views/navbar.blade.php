@@ -5,10 +5,11 @@
         </a>
         <div class="w-full md:w-auto mb-6 md:mb-0 text-center md:text-right">
             @if (!auth()->check())
-                <a href="/auth/login" class="inline-block no-underline bg-black text-white text-sm py-2 px-3">Login</a>
-                <a href="/auth/register" class="inline-block no-underline bg-black text-white text-sm py-2 px-3">Register</a>
+                <a href="/auth/login" class="inline-block no-underline bg-grey-darkest hover:bg-black text-white text-sm py-2 px-3 rounded-l">Login</a>
+                <a href="/auth/register" class="inline-block no-underline bg-grey-darkest hover:bg-black text-white text-sm py-2 px-3 rounded-r">Register</a>
             @else
-                <a href="/auth/logout" class="inline-block no-underline bg-black text-white text-sm py-2 px-3">Logout {{ auth()->user()->getUsername() }}</a>
+                <a href="/auth/logout" class="rounded-l inline-block no-underline bg-grey-darkest hover:bg-black text-white text-sm py-2 px-3">Logout</a>
+                <a href="/profile/update?username={{auth()->user()->getUsername()}}" class="rounded-r inline-block no-underline bg-grey-darkest hover:bg-black text-white text-sm py-2 px-3">My Profile</a>
             @endif
         </div>
     </div>

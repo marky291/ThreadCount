@@ -62,7 +62,6 @@ class Framework
         }
         catch (DatabaseQueryException $e)
         {
-            echo $e;
             return (new ErrorController($request, $template))->DatabaseError($e->getMessage());
         }
         catch (UnauthorizedException $e)
